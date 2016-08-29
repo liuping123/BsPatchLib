@@ -27,7 +27,7 @@ android {
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'bs-patch'
+    bintrayName = 'bspatch'
 
     publishedGroupId = 'com.github.liuping123.bspatch'
     libraryName = 'bspatch'
@@ -37,7 +37,7 @@ ext {
     siteUrl = 'https://github.com/liuping123/BsPatchLib'
     gitUrl = 'https://github.com/liuping123/BsPatchLib.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.2'
 
     developerId = 'ping'
     developerName = 'liu ping'
@@ -53,5 +53,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
 }
+
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
