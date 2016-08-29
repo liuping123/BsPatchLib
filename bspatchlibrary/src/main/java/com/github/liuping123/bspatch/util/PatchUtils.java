@@ -1,4 +1,4 @@
-package com.liuping123.bspatchlibrary.util;
+package com.github.liuping123.bspatch.util;
 
 /**
  * 类说明： 	APK Patch工具类
