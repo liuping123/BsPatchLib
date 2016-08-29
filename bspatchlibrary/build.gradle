@@ -31,13 +31,13 @@ ext {
 
     publishedGroupId = 'com.github.liuping123.bspatch'
     libraryName = 'bspatch'
-    artifact = 'bspatch'
+    artifact = 'bspatchlibrary'
     libraryDescription = 'A bspatch library on Android'
 
     siteUrl = 'https://github.com/liuping123/BsPatchLib'
     gitUrl = 'https://github.com/liuping123/BsPatchLib.git'
 
-    libraryVersion = '0.0.2'
+    libraryVersion = '0.0.1'
 
     developerId = 'ping'
     developerName = 'liu ping'

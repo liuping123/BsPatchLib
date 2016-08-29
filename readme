@@ -1,2 +1,19 @@
 编译so文件，执行jni目录下的makefile
 make ndk_build
+
+1.android studio使用maven
+
+repositories {
+    maven {
+        url 'https://dl.bintray.com/ping/maven/'
+    }
+}
+
+dependencies {
+    ...
+    compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.1@aar'
+}
+
+2.android studio使用jcenter
+
+compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.1'
