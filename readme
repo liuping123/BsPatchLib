@@ -1,0 +1,2 @@
+编译so文件，执行jni目录下的makefile
+make ndk_build
