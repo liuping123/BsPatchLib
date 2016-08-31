@@ -15,6 +15,9 @@ android {
         }
     }
     sourceSets.main {
+//        jniLibs.srcDirs = ['src/main/libs']
+//        jniLibs.srcDirs = ['src/main/jniLibs']
+//        jniLibs.srcDirs = ['libs']
         jni.srcDirs = []
     }
     buildTypes {
@@ -24,6 +27,12 @@ android {
         }
     }
 }
+
+//repositories {
+//    flatDir {
+//        dirs 'libs'
+//    }
+//}
 
 ext {
     bintrayRepo = 'maven'
@@ -37,7 +46,7 @@ ext {
     siteUrl = 'https://github.com/liuping123/BsPatchLib'
     gitUrl = 'https://github.com/liuping123/BsPatchLib.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.4'
 
     developerId = 'ping'
     developerName = 'liu ping'

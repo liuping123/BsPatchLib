@@ -15,7 +15,7 @@
 #include "../bzip2/blocksort.c"
 #include "../bzip2/huffman.c"
 
-#include "../header/com_github_liuping123_bspatchlib_util_PatchUtils.h"
+#include "../header/com_github_liuping123_bspatch_util_PatchUtils.h"
 
 static off_t offtin(u_char *buf) {
 	off_t y;
@@ -50,7 +50,7 @@ int applypatch(int argc, char * argv[]) {
 	ssize_t oldsize, newsize;
 	ssize_t bzctrllen, bzdatalen;
 	u_char header[32], buf[8];
-	u_char *old, *new;
+	u_char *old, *newc;
 	off_t oldpos, newpos;
 	off_t ctrl[3];
 	off_t lenread;
@@ -124,7 +124,7 @@ int applypatch(int argc, char * argv[]) {
 			|| (lseek(fd, 0, SEEK_SET) != 0)
 			|| (read(fd, old, oldsize) != oldsize) || (close(fd) == -1))
 		err(1, "%s", argv[1]);
-	if ((new = malloc(newsize + 1)) == NULL)
+	if ((newc = malloc(newsize + 1)) == NULL)
 		err(1, NULL);
 
 	oldpos = 0;
@@ -144,7 +144,7 @@ int applypatch(int argc, char * argv[]) {
 			errx(1, "Corrupt patch\n");
 
 		/* Read diff string */
-		lenread = BZ2_bzRead(&dbz2err, dpfbz2, new + newpos, ctrl[0]);
+		lenread = BZ2_bzRead(&dbz2err, dpfbz2, newc + newpos, ctrl[0]);
 		if ((lenread < ctrl[0])
 				|| ((dbz2err != BZ_OK) && (dbz2err != BZ_STREAM_END)))
 			errx(1, "Corrupt patch\n");
@@ -152,7 +152,7 @@ int applypatch(int argc, char * argv[]) {
 		/* Add old data to diff string */
 		for (i = 0; i < ctrl[0]; i++)
 			if ((oldpos + i >= 0) && (oldpos + i < oldsize))
-				new[newpos + i] += old[oldpos + i];
+				newc[newpos + i] += old[oldpos + i];
 
 		/* Adjust pointers */
 		newpos += ctrl[0];
@@ -163,7 +163,7 @@ int applypatch(int argc, char * argv[]) {
 			errx(1, "Corrupt patch\n");
 
 		/* Read extra string */
-		lenread = BZ2_bzRead(&ebz2err, epfbz2, new + newpos, ctrl[1]);
+		lenread = BZ2_bzRead(&ebz2err, epfbz2, newc + newpos, ctrl[1]);
 		if ((lenread < ctrl[1])
 				|| ((ebz2err != BZ_OK) && (ebz2err != BZ_STREAM_END)))
 			errx(1, "Corrupt patch\n");
@@ -182,31 +182,31 @@ int applypatch(int argc, char * argv[]) {
 
 	/* Write the new file */
 	if (((fd = open(argv[2], O_CREAT | O_TRUNC | O_WRONLY, 0666)) < 0)
-			|| (write(fd, new, newsize) != newsize) || (close(fd) == -1))
+			|| (write(fd, newc, newsize) != newsize) || (close(fd) == -1))
 		err(1, "%s", argv[2]);
 
-	free(new);
+	free(newc);
 	free(old);
 
 	return 0;
 }
 
 /*
- * Class:     com_github_liuping123_bspatchlib_util_PatchUtils_patch
+ * Class:     com_github_liuping123_bspatch_util_PatchUtils
  * Method:    patch
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_com_github_liuping123_bspatchlib_util_PatchUtils_patch(JNIEnv *env,
-		jobject obj, jstring old, jstring new, jstring patch) {
+JNIEXPORT jint JNICALL Java_com_github_liuping123_bspatch_util_PatchUtils_patch(JNIEnv *env,
+		jobject obj, jstring old, jstring news, jstring patch) {
 
 	char * ch[4];
 	ch[0] = "bspatch";
 	ch[1] = (char*) ((*env)->GetStringUTFChars(env, old, 0));
-	ch[2] = (char*) ((*env)->GetStringUTFChars(env, new, 0));
+	ch[2] = (char*) ((*env)->GetStringUTFChars(env, news, 0));
 	ch[3] = (char*) ((*env)->GetStringUTFChars(env, patch, 0));
 
 	__android_log_print(ANDROID_LOG_INFO, "ApkPatchLibrary", "old = %s ", ch[1]);
-	__android_log_print(ANDROID_LOG_INFO, "ApkPatchLibrary", "new = %s ", ch[2]);
+	__android_log_print(ANDROID_LOG_INFO, "ApkPatchLibrary", "news = %s ", ch[2]);
 	__android_log_print(ANDROID_LOG_INFO, "ApkPatchLibrary", "patch = %s ", ch[3]);
 
 	int ret = applypatch(4, ch);
@@ -214,7 +214,7 @@ JNIEXPORT jint JNICALL Java_com_github_liuping123_bspatchlib_util_PatchUtils_pat
 	__android_log_print(ANDROID_LOG_INFO, "ApkPatchLibrary", "applypatch result = %d ", ret);
 
 	(*env)->ReleaseStringUTFChars(env, old, ch[1]);
-	(*env)->ReleaseStringUTFChars(env, new, ch[2]);
+	(*env)->ReleaseStringUTFChars(env, news, ch[2]);
 	(*env)->ReleaseStringUTFChars(env, patch, ch[3]);
 
 	return ret;
