@@ -11,9 +11,9 @@ repositories {
 
 dependencies {
     ...
-    compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.1@aar'
+    compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.4@aar'
 }
 
 2.android studio使用jcenter
 
-compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.1'
+compile 'com.github.liuping123.bspatch:bspatchlibrary:0.0.4'
